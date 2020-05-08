@@ -65,7 +65,7 @@ const Intro = (props) => {
           <br/>
           A full-stack web developer.
         </TitleContainer>
-        <NextSection next={props.next} />
+        <NextSection />
     </div>
   )
 }

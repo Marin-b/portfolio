@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+
 import { Chevron } from "../../../components"
 import { fadeIn } from "./animations"
+import { FullpageContext } from "../index"
 
 const ArrowContainer = styled.div`
   position: absolute;
-  bottom: 5%;
+  bottom: 3vw;
   left: 50%;
   transform: translate(-50%, 0);
   opacity: 0;
@@ -16,8 +18,13 @@ const ArrowContainer = styled.div`
 
 
 const NextSection = (props) => {
+  const fullPageApi = useContext(FullpageContext);
+
+  const next = () => {
+    fullPageApi.moveSectionDown()
+  }
   return(
-    <ArrowContainer onClick={props.next}>
+    <ArrowContainer onClick={next}>
       <Chevron color={props.color}/>
     </ArrowContainer>
   )
