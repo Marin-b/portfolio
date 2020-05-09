@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled, { withTheme } from "styled-components"
 
 import Projects from "./projects"
+import { PopupContext } from "../../../App"
 import { NextSection, SectionTitle } from "../components"
 
 
@@ -22,6 +23,11 @@ const LeftContainer = styled.div`
   @media (max-width: ${props => props.theme.splitTreshold}px) {
     width: 100%;
   }
+`
+
+const RightContainer = styled.div`
+  flex-grow: 1;
+  margin-left: 5vw;
 `
 
 const FiltersContainer =  styled.div`
@@ -73,6 +79,22 @@ const StackIcon = styled.i`
 
 const Project = (props) => {
   const [filters, setFilters] = useState(["Ruby on Rails"])
+  const [splitView, setSplitView] = useState(window.innerWidth >= props.theme.splitTreshold)
+  const [selected, setSelected ] = useState(undefined)
+
+  const { popupContent, setPopupContent } = useContext(PopupContext)
+
+  useEffect(() => {
+    if(!splitView && selected) {
+      setPopupContent(selected.component)
+    }
+  }, [selected])
+
+  useEffect(() => {
+    if(selected) {
+      setSelected(undefined)
+    }
+  }, [popupContent])
 
   const getStackIcon = (stack) => {
     switch(stack){
@@ -127,6 +149,7 @@ const Project = (props) => {
               key={project.name}
               mainStack={project.stack[0]}
               active={filters.includes(project.stack[0])}
+              onClick={() => {setSelected(project)}}
               >
                 <div>{project.name}</div>
                { getStackIcon(project.stack[0]) }
@@ -134,7 +157,11 @@ const Project = (props) => {
             )}
           </ListContainer>
         </LeftContainer>
-
+        {splitView &&
+          <RightContainer>
+            {selected && <selected.component />}
+          </RightContainer>
+        }
         <NextSection next={props.nextSection} />
       </Wrapper>
     </div>

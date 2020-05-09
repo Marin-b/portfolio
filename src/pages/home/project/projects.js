@@ -1,7 +1,10 @@
+import NicoDico from "./nicodico"
+
 export default [
   {
     "name": "NicoDico",
     "stack": ["Ruby on Rails"],
+    "component": NicoDico
   },
   {
     "name": "SquidX",
